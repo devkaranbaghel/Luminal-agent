@@ -6,6 +6,7 @@ import rateLimit from "express-rate-limit";
 import { config } from "./config";
 import routes from "./routes";
 import { errorHandler } from "./middleware/error";
+import { AutomationWorker } from "./workers/automation.worker";
 
 const app = express();
 
@@ -36,6 +37,7 @@ app.use(errorHandler);
 
 app.listen(config.port, () => {
   console.log(`[server]: Luminal Agent API is running at http://localhost:${config.port}`);
+  AutomationWorker.start();
 });
 
 export default app; // For testing

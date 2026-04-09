@@ -1,22 +1,47 @@
 'use client';
 
 import { useState } from 'react';
-import { useAuth } from '@/hooks/useLuminal';
+import { signIn } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { Orbit } from 'lucide-react';
+import { api } from '@/lib/api';
 
 export default function LoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const { login, loading } = useAuth();
+  const [loading, setLoading] = useState(false);
+  const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setLoading(true);
     try {
-      await login({ email, password });
-    } catch (error) {
-      // Error handled by global API interceptor toast
-      console.error('Login failed:', error);
+      // 1. Authenticate with Express Backend to get raw JWT 
+      // (This is required because the Scraper/Tracker use api.ts Axios calls to the backend on port 4000!)
+      const backendRes = await api.post('/auth/login', { email, password }) as any;
+      if (backendRes.data?.accessToken) {
+        localStorage.setItem('accessToken', backendRes.data.accessToken);
+        localStorage.setItem('refreshToken', backendRes.data.refreshToken);
+        localStorage.setItem('user', JSON.stringify(backendRes.data.user));
+      }
+
+      // 2. Authenticate with NextAuth to hydrate the Server Session
+      const res = await signIn('credentials', {
+        email,
+        password,
+        redirect: false,
+      });
+
+      if (res?.error) {
+        throw new Error("Invalid email or password");
+      }
+
+      // Success, native redirect
+      router.push('/');
+    } catch (error: any) {
+      console.error('Login failed:', error.message);
+      setLoading(false);
     }
   };
 

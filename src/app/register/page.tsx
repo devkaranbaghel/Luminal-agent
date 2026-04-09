@@ -1,23 +1,50 @@
 'use client';
 
 import { useState } from 'react';
-import { useAuth } from '@/hooks/useLuminal';
+import { signIn } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { Orbit } from 'lucide-react';
+import { api } from '@/lib/api';
 
 export default function RegisterPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
-  const { register, loading } = useAuth();
+  const [loading, setLoading] = useState(false);
+  const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setLoading(true);
+    
     try {
-      await register({ email, password, name });
-    } catch (error) {
-      // Error handled by global API interceptor toast
+      // 1. Create the user physically in the unified PostgreSQL Database via API
+      const backendRes = await api.post('/auth/register', { email, password, name }) as any;
+      
+      // Save Express JWTs so Axios calls to the Python/Node agents on port 4000 work!
+      if (backendRes.data?.accessToken) {
+        localStorage.setItem('accessToken', backendRes.data.accessToken);
+        localStorage.setItem('refreshToken', backendRes.data.refreshToken);
+        localStorage.setItem('user', JSON.stringify(backendRes.data.user));
+      }
+
+      // 2. Immediately initiate a NextAuth session using those fresh credentials
+      const res = await signIn('credentials', {
+        email,
+        password,
+        redirect: false,
+      });
+
+      if (res?.error) {
+        throw new Error("Login failed after registration");
+      }
+
+      // 3. Navigate successfully to the protected Profile
+      router.push('/');
+    } catch (error: any) {
       console.error('Registration failed:', error);
+      setLoading(false);
     }
   };
 

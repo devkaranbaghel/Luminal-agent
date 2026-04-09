@@ -1,8 +1,10 @@
 'use client';
 
-import { Bell, Moon, Sun } from 'lucide-react';
+import { Moon, Sun } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { useSession } from 'next-auth/react';
+import { NotificationCenter } from '../NotificationCenter';
 
 const navTabs = [
   { name: 'Profile', href: '/' },
@@ -14,6 +16,11 @@ const navTabs = [
 
 export function TopNav() {
   const pathname = usePathname();
+  const { data: session } = useSession();
+  
+  // Calculate Initials
+  const name = session?.user?.name || session?.user?.email || '?';
+  const initials = name !== '?' ? name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase() : '?';
 
   return (
     <nav className="h-[52px] bg-sidebar-bg border-b border-border-color flex items-center justify-between px-6 fixed top-0 left-0 right-0 z-50">
@@ -42,15 +49,19 @@ export function TopNav() {
       </div>
 
       <div className="flex items-center gap-4">
-        <button className="text-accent-primary transition-colors">
-          <Bell size={20} fill="currentColor" />
-        </button>
+        <NotificationCenter userId={(session?.user as any)?.id} />
         <button className="text-text-muted hover:text-text-primary transition-colors">
           <Moon size={20} />
         </button>
-        <div className="w-8 h-8 rounded-full bg-[#2a1f5e] flex items-center justify-center text-xs font-semibold text-text-primary">
-          AS
-        </div>
+        {session?.user ? (
+          <div className="w-8 h-8 rounded-full bg-[#2a1f5e] flex items-center justify-center text-xs font-semibold text-text-primary cursor-pointer hover:ring-2 ring-accent-primary transition-all">
+            {initials}
+          </div>
+        ) : (
+          <Link href="/login" className="text-xs font-bold text-accent-primary hover:underline">
+            Login
+          </Link>
+        )}
       </div>
     </nav>
   );
