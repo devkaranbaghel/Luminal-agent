@@ -1,0 +1,93 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model User {
+  id            String         @id @default(uuid())
+  email         String         @unique
+  passwordHash  String
+  name          String?
+  role          String?        @default("Product Designer")
+  location      String?        @default("San Francisco, CA")
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  jobs          ScrapedJob[]
+  applications  Application[]
+  sessions      RefreshSession[]
+  notifications Notification[]
+  interviews    Interview[]
+}
+
+model RefreshSession {
+  id        String   @id @default(uuid())
+  token     String   @unique
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+}
+
+model ScrapedJob {
+  id          String    @id @default(uuid())
+  title       String
+  company     String
+  location    String?
+  matchScore  Int?
+  status      String    @default("RANKED") // RANKED, DISCARDED
+  source      String?   
+  externalUrl String?   @unique
+  userId      String
+  user        User      @relation(fields: [userId], references: [id])
+  createdAt   DateTime  @default(now())
+}
+
+model Application {
+  id          String   @id @default(uuid())
+  jobTitle    String
+  company     String
+  location    String?
+  status      String   @default("QUEUED") // QUEUED, APPLYING, APPLIED, INTERVIEWing, REJECTED, OFFER
+  appliedDate DateTime?
+  userId      String
+  user        User      @relation(fields: [userId], references: [id])
+  logs        AgentLog[]
+  createdAt   DateTime @default(now())
+}
+
+model AgentLog {
+  id            String      @id @default(uuid())
+  level         String      // INFO, SUCCESS, ERROR
+  message       String
+  applicationId String?
+  application   Application? @relation(fields: [applicationId], references: [id])
+  createdAt     DateTime    @default(now())
+}
+
+model Notification {
+  id        String   @id @default(uuid())
+  title     String
+  message   String
+  type      String   @default("INFO") // INFO, SUCCESS, WARNING, AGENT
+  isRead    Boolean  @default(false)
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+}
+
+model Interview {
+  id          String   @id @default(uuid())
+  company     String
+  role        String
+  date        DateTime
+  type        String   @default("Technical") // Screening, Technical, Onsite
+  intelTags   String?  // JSON string: "['React', 'High Growth', 'Seed']"
+  status      String   @default("UPCOMING")
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt   DateTime @default(now())
+}
