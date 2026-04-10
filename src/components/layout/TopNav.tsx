@@ -7,7 +7,7 @@ import { useSession } from 'next-auth/react';
 import { NotificationCenter } from '../NotificationCenter';
 
 const navTabs = [
-  { name: 'Profile', href: '/' },
+  { name: 'Profile', href: '/profile' },
   { name: 'Resume', href: '/resume' },
   { name: 'Jobs', href: '/jobs' },
   { name: 'Tracker', href: '/tracker' },

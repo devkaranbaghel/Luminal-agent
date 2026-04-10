@@ -38,7 +38,7 @@ export default function LoginPage() {
       }
 
       // Success, native redirect
-      router.push('/');
+      router.push('/profile');
     } catch (error: any) {
       console.error('Login failed:', error.message);
       setLoading(false);
@@ -94,7 +94,7 @@ export default function LoginPage() {
 
         <p className="mt-8 text-center text-sm text-text-muted">
           Don't have an account?{' '}
-          <Link href="/register" className="text-accent-primary font-bold hover:underline">
+          <Link href="/" className="text-accent-primary font-bold hover:underline">
             Create Agent
           </Link>
         </p>

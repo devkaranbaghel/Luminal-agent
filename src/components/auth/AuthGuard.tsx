@@ -4,7 +4,7 @@ import { useAuth } from '@/hooks/useLuminal';
 import { useRouter, usePathname } from 'next/navigation';
 import { useEffect } from 'react';
 
-const PUBLIC_ROUTES = ['/login', '/register', '/'];
+const PUBLIC_ROUTES = ['/login', '/'];
 
 export function AuthGuard({ children }: { children: React.ReactNode }) {
   const { user, loading, isAuthenticated } = useAuth();

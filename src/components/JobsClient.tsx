@@ -20,6 +20,10 @@ export function JobsClient({ initialJobs }: { initialJobs: any[] }) {
   const [jobs, setJobs] = useState(initialJobs);
   const [applyingId, setApplyingId] = useState<string | null>(null);
   const [isSeeding, setIsSeeding] = useState(false);
+  const [platformFilter, setPlatformFilter] = useState('All Platforms');
+  const [jobTypeFilter, setJobTypeFilter] = useState('Job Type');
+  const [scoreFilter, setScoreFilter] = useState('Score 80%+');
+  const [salaryFilter, setSalaryFilter] = useState('Salary');
   const router = useRouter();
 
   // Sync state when props change (after router.refresh)
@@ -58,14 +62,37 @@ export function JobsClient({ initialJobs }: { initialJobs: any[] }) {
       case 'LINKEDIN': return 'bg-blue-900/40 text-blue-400 border-blue-400/20';
       case 'INDEED': return 'bg-orange-900/40 text-orange-400 border-orange-400/20';
       case 'NAUKRI': return 'bg-green-900/40 text-green-400 border-green-400/20';
+      case 'GLASSDOOR': return 'bg-purple-900/40 text-purple-400 border-purple-400/20';
       default: return 'bg-gray-800 text-gray-400 border-gray-400/20';
     }
   };
 
-  const filteredJobs = jobs.filter(j => 
-    j.title.toLowerCase().includes(search.toLowerCase()) || 
-    j.company.toLowerCase().includes(search.toLowerCase())
-  );
+  const filteredJobs = jobs.filter(j => {
+    const matchesSearch = j.title.toLowerCase().includes(search.toLowerCase()) || 
+                          j.company.toLowerCase().includes(search.toLowerCase());
+    
+    // Extract base platform name (e.g. Naukri.com -> naukri)
+    const normalizedFilter = platformFilter.replace('.com', '').toLowerCase();
+    const matchesPlatform = platformFilter === 'All Platforms' || 
+                            j.source?.toLowerCase().includes(normalizedFilter);
+                            
+    const matchesJobType = jobTypeFilter === 'Job Type' || jobTypeFilter === 'All Types' ||
+                           j.title.toLowerCase().includes(jobTypeFilter.toLowerCase()) ||
+                           (jobTypeFilter === 'Remote' && j.location?.toLowerCase().includes('remote'));
+
+    let matchesScore = true;
+    if (scoreFilter !== 'All Scores' && scoreFilter !== 'Score 80%+ (Default)') {
+      // Default score 'Score 80%+' might be standard, we can parse it
+      const matchRequirement = parseInt(scoreFilter.replace(/[^0-9]/g, ''));
+      if (!isNaN(matchRequirement)) {
+        matchesScore = (j.matchScore || 0) >= matchRequirement;
+      }
+    }
+
+    const matchesSalary = true; // Salary formatting depends on detailed demo data
+                            
+    return matchesSearch && matchesPlatform && matchesJobType && matchesScore && matchesSalary;
+  });
 
   return (
     <main className="pl-[220px] pt-[52px] pb-24 min-h-screen">
@@ -100,15 +127,32 @@ export function JobsClient({ initialJobs }: { initialJobs: any[] }) {
               onChange={(e) => setSearch(e.target.value)}
             />
           </div>
-          <div className="flex gap-2">
-            {['All Platforms', 'Job Type', 'Score 80%+', 'Salary'].map((filter) => (
-              <button 
-                key={filter}
-                className="px-4 py-2.5 bg-[#1a1a28] border border-[#2a2a40] text-text-primary text-xs font-medium rounded-lg flex items-center gap-2 hover:border-accent-primary transition-colors whitespace-nowrap"
-              >
-                {filter}
-                <ChevronDown size={14} className="text-text-hint" />
-              </button>
+          <div className="flex gap-2 relative z-20">
+            {[
+              { id: 'platform', val: platformFilter, set: setPlatformFilter, opts: ['All Platforms', 'Naukri.com', 'LinkedIn', 'Indeed', 'Glassdoor'] },
+              { id: 'jobType', val: jobTypeFilter, set: setJobTypeFilter, opts: ['Job Type', 'Full-time', 'Part-time', 'Contract', 'Internship', 'Remote'] },
+              { id: 'score', val: scoreFilter, set: setScoreFilter, opts: ['All Scores', 'Score 90%+', 'Score 80%+', 'Score 70%+', 'Score 60%+'] },
+              { id: 'salary', val: salaryFilter, set: setSalaryFilter, opts: ['Salary', '$50k+', '$100k+', '$150k+', '$200k+'] }
+            ].map((filterDef) => (
+              <div key={filterDef.id} className="relative group">
+                <button 
+                  className="px-4 py-2.5 bg-[#1a1a28] border border-[#2a2a40] text-text-primary text-xs font-medium rounded-lg flex items-center gap-2 hover:border-accent-primary transition-colors whitespace-nowrap min-w-[110px] justify-between"
+                >
+                  {filterDef.val}
+                  <ChevronDown size={14} className="text-text-hint shrink-0" />
+                </button>
+                <div className="absolute top-full mt-2 left-0 min-w-[140px] bg-[#1a1a28] border border-[#2a2a40] rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all py-1 z-30">
+                  {filterDef.opts.map(opt => (
+                    <button 
+                      key={opt} 
+                      onClick={() => filterDef.set(opt)}
+                      className="w-full text-left px-4 py-2 text-xs text-text-muted hover:text-text-primary hover:bg-[#2a2a40] transition-colors"
+                    >
+                      {opt}
+                    </button>
+                  ))}
+                </div>
+              </div>
             ))}
           </div>
         </div>

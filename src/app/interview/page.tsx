@@ -66,8 +66,8 @@ export default function InterviewDashboard() {
                   </div>
                 </div>
                 <div className="grid grid-cols-7 gap-y-2 text-center">
-                  {['S', 'M', 'T', 'W', 'T', 'F', 'S'].map((day) => (
-                    <span key={day} className="text-[10px] font-bold text-text-hint">{day}</span>
+                  {['S', 'M', 'T', 'W', 'T', 'F', 'S'].map((day, ix) => (
+                    <span key={`${day}-${ix}`} className="text-[10px] font-bold text-text-hint">{day}</span>
                   ))}
                   {[30, 31, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19].map((date, i) => (
                     <div key={i} className="flex items-center justify-center h-7 w-7 text-[11px] mx-auto">
