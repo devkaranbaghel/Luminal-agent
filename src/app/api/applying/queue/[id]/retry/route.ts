@@ -18,13 +18,13 @@ export async function PUT(
     const updated = await prisma.application.update({
       where: {
         id: id,
-        userId: (session.user as any).id
+        userId: (session.user as unknown).id
       },
       data: { status: "QUEUED" }
     });
 
     return NextResponse.json(updated);
-  } catch (error) {
+  } catch (_error) {
     return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
   }
 }

@@ -8,14 +8,14 @@ import {
   DollarSign, 
   ChevronDown, 
   Briefcase,
-  AlertTriangle,
+  
   Database
 } from 'lucide-react';
 import { useAutomation } from '@/hooks/useLuminal';
 import { seedDemoData } from '@/app/actions/seed';
 import { useRouter } from 'next/navigation';
 
-export function JobsClient({ initialJobs }: { initialJobs: any[] }) {
+export function JobsClient({ initialJobs }: { initialJobs: unknown[] }) {
   const [search, setSearch] = useState('');
   const [jobs, setJobs] = useState(initialJobs);
   const [applyingId, setApplyingId] = useState<string | null>(null);
@@ -33,7 +33,7 @@ export function JobsClient({ initialJobs }: { initialJobs: any[] }) {
   
   const { apply } = useAutomation();
 
-  const handleApply = async (job: any) => {
+  const handleApply = async (job: unknown) => {
     setApplyingId(job.id);
     const success = await apply(job.id, job.title, job.company);
     
@@ -50,7 +50,7 @@ export function JobsClient({ initialJobs }: { initialJobs: any[] }) {
     try {
       await seedDemoData();
       router.refresh();
-    } catch (e) {
+    } catch (_e) {
       alert("Seeding failed");
     } finally {
       setIsSeeding(false);
@@ -162,7 +162,7 @@ export function JobsClient({ initialJobs }: { initialJobs: any[] }) {
           <div className="flex flex-col items-center justify-center py-20 bg-card-surface border border-dashed border-border-color rounded-xl">
              <Briefcase size={48} className="text-text-hint mb-4" />
              <h3 className="text-lg font-bold text-text-primary">No Jobs Found</h3>
-             <p className="text-text-muted text-sm">Use the 'Seed Demo Data' button to populate your workspace.</p>
+             <p className="text-text-muted text-sm">Use the &apos;Seed Demo Data&apos; button to populate your workspace.</p>
           </div>
         ) : (
           <div className="grid grid-cols-1 xl:grid-cols-2 gap-4">

@@ -13,7 +13,7 @@ export default async function JobsPage() {
     redirect('/login');
   }
 
-  const userId = (session.user as any).id;
+  const userId = (session.user as unknown).id;
 
   // Fetch real ranked jobs from the database
   const scrapedJobs = await prisma.scrapedJob.findMany({

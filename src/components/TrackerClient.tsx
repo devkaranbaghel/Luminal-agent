@@ -11,7 +11,7 @@ import {
   MoreVertical
 } from 'lucide-react';
 
-export function TrackerClient({ applications }: { applications: any[] }) {
+export function TrackerClient({ applications }: { applications: unknown[] }) {
   const [view, setView] = useState<'kanban' | 'table'>('kanban');
 
   // Group applications by status

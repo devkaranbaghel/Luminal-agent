@@ -15,7 +15,7 @@ export async function POST(
   }
 
   try {
-    const userId = (session.user as any).id;
+    const userId = (session.user as unknown).id;
     
     // Add to auto-apply queue (using the existing Application model with a special status)
     const application = await prisma.application.upsert({
@@ -32,7 +32,7 @@ export async function POST(
     });
 
     return NextResponse.json(application);
-  } catch (error) {
+  } catch (_error) {
     return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
   }
 }

@@ -3,7 +3,7 @@ import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { NextResponse } from "next/server";
 
-export async function GET(req: Request) {
+export async function GET(_req: Request) {
   const session = await getServerSession(authOptions);
 
   if (!session || !session.user) {
@@ -13,7 +13,7 @@ export async function GET(req: Request) {
   try {
     const interviews = await prisma.interview.findMany({
       where: {
-        userId: (session.user as any).id,
+        userId: (session.user as unknown).id,
       },
       select: {
         scheduledAt: true,
@@ -22,7 +22,7 @@ export async function GET(req: Request) {
     });
 
     return NextResponse.json(interviews);
-  } catch (error) {
+  } catch (_error) {
     return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
   }
 }

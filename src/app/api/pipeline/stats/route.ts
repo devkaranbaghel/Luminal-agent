@@ -11,7 +11,7 @@ export async function GET() {
   }
 
   try {
-    const userId = (session.user as any).id;
+    const userId = (session.user as unknown).id;
     
     const [total, applied, interview, offers] = await Promise.all([
       prisma.pipelineJob.count({ where: { userId } }),
@@ -26,7 +26,7 @@ export async function GET() {
       interview,
       offers
     });
-  } catch (error) {
+  } catch (_error) {
     return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
   }
 }

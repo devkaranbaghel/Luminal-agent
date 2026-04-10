@@ -23,7 +23,7 @@ api.interceptors.request.use((config) => {
 api.interceptors.response.use(
   (response) => response.data,
   async (error: AxiosError) => {
-    const originalRequest = error.config as any;
+    const originalRequest = error.config as unknown;
 
     // Handle 401 Unauthorized (Token expired)
     if (error.response?.status === 401 && !originalRequest._retry) {
@@ -40,7 +40,7 @@ api.interceptors.response.use(
 
           originalRequest.headers.Authorization = `Bearer ${accessToken}`;
           return api(originalRequest);
-        } catch (refreshError) {
+        } catch (_refreshError) {
           localStorage.removeItem('accessToken');
           localStorage.removeItem('refreshToken');
           window.location.href = '/login';
@@ -49,7 +49,7 @@ api.interceptors.response.use(
     }
 
     // Global Toast for errors
-    const errorMessage = (error.response?.data as any)?.error || 'An unexpected error occurred';
+    const errorMessage = (error.response?.data as unknown)?.error || 'An unexpected error occurred';
     toast.error(errorMessage);
 
     return Promise.reject(error);

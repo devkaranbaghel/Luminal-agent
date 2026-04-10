@@ -12,11 +12,11 @@ export async function GET() {
 
   try {
     const filters = await prisma.scrapingFilter.findUnique({
-      where: { userId: (session.user as any).id }
+      where: { userId: (session.user as unknown).id }
     });
 
     return NextResponse.json(filters || {});
-  } catch (error) {
+  } catch (_error) {
     return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
   }
 }
@@ -30,7 +30,7 @@ export async function PUT(req: Request) {
 
   try {
     const body = await req.json();
-    const userId = (session.user as any).id;
+    const userId = (session.user as unknown).id;
 
     const updated = await prisma.scrapingFilter.upsert({
       where: { userId },
@@ -39,7 +39,7 @@ export async function PUT(req: Request) {
     });
 
     return NextResponse.json(updated);
-  } catch (error) {
+  } catch (_error) {
     return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
   }
 }

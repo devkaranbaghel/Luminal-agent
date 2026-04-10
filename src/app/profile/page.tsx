@@ -14,7 +14,7 @@ export default async function ProfilePage() {
     redirect('/login');
   }
 
-  const userId = (session.user as any).id;
+  const userId = (session.user as unknown).id;
   const userEmail = session.user.email || '';
 
   const profile = await prisma.profile.findUnique({

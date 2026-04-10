@@ -18,12 +18,12 @@ export async function GET(
     const questions = await prisma.prepQuestion.findMany({
       where: {
         interviewId: id,
-        interview: { userId: (session.user as any).id }
+        interview: { userId: (session.user as unknown).id }
       }
     });
 
     return NextResponse.json(questions);
-  } catch (error) {
+  } catch (_error) {
     return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
   }
 }

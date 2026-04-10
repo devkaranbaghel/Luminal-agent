@@ -7,9 +7,9 @@ import {
   X, 
   RotateCcw, 
   Sparkles, 
-  ExternalLink, 
-  Zap,
-  Info
+   
+  
+  _Info
 } from 'lucide-react';
 import { useState } from 'react';
 

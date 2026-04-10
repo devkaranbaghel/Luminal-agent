@@ -4,12 +4,12 @@ import { TopNav } from '@/components/layout/TopNav';
 import { LeftSidebar } from '@/components/layout/LeftSidebar';
 import { 
   Settings, 
-  RotateCcw, 
+   
   Pause, 
   Play, 
-  CheckCircle2, 
-  Clock, 
-  AlertCircle, 
+   
+   
+   
   Sparkles,
   ArrowRight,
   Loader2

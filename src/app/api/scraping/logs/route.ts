@@ -15,13 +15,13 @@ export async function GET(req: Request) {
 
   try {
     const logs = await prisma.scraperLog.findMany({
-      where: { userId: (session.user as any).id },
+      where: { userId: (session.user as unknown).id },
       orderBy: { createdAt: 'desc' },
       take: limit
     });
 
     return NextResponse.json(logs);
-  } catch (error) {
+  } catch (_error) {
     return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
   }
 }

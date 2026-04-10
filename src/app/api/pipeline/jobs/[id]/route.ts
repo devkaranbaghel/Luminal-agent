@@ -22,7 +22,7 @@ export async function PUT(
       where: { id: id }
     });
 
-    if (!job || job.userId !== (session.user as any).id) {
+    if (!job || job.userId !== (session.user as unknown).id) {
       return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     }
 
@@ -39,7 +39,7 @@ export async function PUT(
     });
 
     return NextResponse.json(updatedJob);
-  } catch (error) {
+  } catch (_error) {
     return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
   }
 }
@@ -60,7 +60,7 @@ export async function DELETE(
       where: { id: id }
     });
 
-    if (!job || job.userId !== (session.user as any).id) {
+    if (!job || job.userId !== (session.user as unknown).id) {
       return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     }
 
@@ -69,7 +69,7 @@ export async function DELETE(
     });
 
     return NextResponse.json({ success: true });
-  } catch (error) {
+  } catch (_error) {
     return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
   }
 }

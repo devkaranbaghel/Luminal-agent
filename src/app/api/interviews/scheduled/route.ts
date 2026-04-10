@@ -13,7 +13,7 @@ export async function GET() {
   try {
     const interviews = await prisma.interview.findMany({
       where: {
-        userId: (session.user as any).id,
+        userId: (session.user as unknown).id,
         status: "SCHEDULED"
       },
       include: { questions: true },
@@ -21,7 +21,7 @@ export async function GET() {
     });
 
     return NextResponse.json(interviews);
-  } catch (error) {
+  } catch (_error) {
     return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
   }
 }

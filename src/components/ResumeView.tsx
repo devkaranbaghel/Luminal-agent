@@ -28,7 +28,7 @@ const printStyles = `
   }
 `;
 
-export default function ResumeView({ userData }: { userData: any }) {
+export default function ResumeView({ userData }: { userData: unknown }) {
   const [activeVersion, setActiveVersion] = useState('LaTeX-Professional');
   const [isEditing, setIsEditing] = useState(false);
   const [newSkill, setNewSkill] = useState('');
@@ -47,7 +47,7 @@ export default function ResumeView({ userData }: { userData: any }) {
   
   const [editableSkills, setEditableSkills] = useState<string[]>(
     userData?.profile?.skills?.length > 0 
-      ? userData.profile.skills.map((s: any) => s.name) 
+      ? userData.profile.skills.map((s: unknown) => s.name) 
       : ['React', 'Next.js', 'Node.js', 'TypeScript', 'Tailwind CSS', 'PostgreSQL']
   );
   
@@ -186,7 +186,7 @@ export default function ResumeView({ userData }: { userData: any }) {
                     <div className="flex flex-col mb-2 pt-1 border-b border-black">
                       <h3 className="text-sm font-bold uppercase tracking-widest text-left">Education</h3>
                     </div>
-                    {education.map((edu: any, i: number) => (
+                    {education.map((edu: unknown, i: number) => (
                       <div key={i} className="mb-2">
                         <div className="flex justify-between items-baseline mb-0.5">
                           <h4 className="font-bold text-[12px]">{edu.school}</h4>
@@ -228,7 +228,7 @@ export default function ResumeView({ userData }: { userData: any }) {
                       <h3 className="text-sm font-bold uppercase tracking-widest text-left">Projects</h3>
                     </div>
                     <div className="space-y-4">
-                      {projects.map((p: any, i: number) => (
+                      {projects.map((p: unknown, i: number) => (
                         <div key={i}>
                           <div className="font-bold text-[12px] mb-1">
                             {p.name} <span className="font-normal mx-1">|</span> <span className="font-medium italic">Next.js, Express.js</span>
@@ -433,7 +433,7 @@ export default function ResumeView({ userData }: { userData: any }) {
                   {/* Experience */}
                   <div className="relative z-10">
                     <div className="flex flex-col gap-6">
-                      {experiences.map((exp: any, i: number) => (
+                      {experiences.map((exp: unknown, i: number) => (
                         <div key={i}>
                           <div className="flex items-start justify-between mb-1">
                             <h3 className="font-bold text-[15px]">{exp.company}</h3>
@@ -456,7 +456,7 @@ export default function ResumeView({ userData }: { userData: any }) {
                         <span className="text-xs font-bold text-teal-600 tracking-widest uppercase">Education</span>
                         <div className="flex-1 h-[1px] bg-gray-200" />
                       </div>
-                      {education.map((edu: any, i: number) => (
+                      {education.map((edu: unknown, i: number) => (
                         <div key={i} className="mb-4">
                           <h4 className="font-bold text-sm">{edu.school}</h4>
                           <p className="text-xs text-gray-700">{edu.degree}</p>
@@ -470,7 +470,7 @@ export default function ResumeView({ userData }: { userData: any }) {
                         <span className="text-xs font-bold text-teal-600 tracking-widest uppercase">Projects</span>
                         <div className="flex-1 h-[1px] bg-gray-200" />
                       </div>
-                      {projects.map((p: any, i: number) => (
+                      {projects.map((p: unknown, i: number) => (
                         <div key={i} className="mb-4">
                           <h4 className="font-bold text-sm">{p.name}</h4>
                           <p className="text-xs text-gray-800 line-clamp-2">{p.description}</p>
@@ -489,7 +489,7 @@ export default function ResumeView({ userData }: { userData: any }) {
                         <div className="flex-1 h-[1px] bg-gray-200" />
                       </div>
                       <div className="grid grid-cols-2 gap-4">
-                        {certificates.map((c: any, i: number) => (
+                        {certificates.map((c: unknown, i: number) => (
                           <div key={i}>
                             <h4 className="font-bold text-xs">{c.name}</h4>
                             <p className="text-[10px] text-gray-600">{c.issuer} · {c.date}</p>
@@ -630,7 +630,7 @@ export default function ResumeView({ userData }: { userData: any }) {
                   <div>
                     <h4 className="text-sm font-bold text-text-primary mb-1">Strengthen Action Verbs</h4>
                     <p className="text-xs text-text-muted leading-relaxed">
-                      Change passive phrases like "Helped build" to stronger verbs like "Architected" or "Spearheaded".
+                      Change passive phrases like &quot;Helped build&quot; to stronger verbs like &quot;Architected&quot; or &quot;Spearheaded&quot;.
                     </p>
                   </div>
                 </div>

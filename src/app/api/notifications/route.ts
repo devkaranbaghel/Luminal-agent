@@ -16,14 +16,14 @@ export async function GET(req: Request) {
   try {
     const notifications = await prisma.notification.findMany({
       where: {
-        userId: (session.user as any).id,
+        userId: (session.user as unknown).id,
         ...(unreadOnly ? { isRead: false } : {})
       },
       orderBy: { createdAt: 'desc' }
     });
 
     return NextResponse.json(notifications);
-  } catch (error) {
+  } catch (_error) {
     return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
   }
 }

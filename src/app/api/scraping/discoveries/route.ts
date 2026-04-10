@@ -18,7 +18,7 @@ export async function GET(req: Request) {
     const jobs = await prisma.job.findMany({
       where: {
         applications: {
-          none: { userId: (session.user as any).id }
+          none: { userId: (session.user as unknown).id }
         }
       },
       orderBy: { createdAt: 'desc' },
@@ -26,7 +26,7 @@ export async function GET(req: Request) {
     });
 
     return NextResponse.json(jobs);
-  } catch (error) {
+  } catch (_error) {
     return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
   }
 }

@@ -23,13 +23,13 @@ export async function PUT(
     const updated = await prisma.application.updateMany({
       where: {
         jobId: id,
-        userId: (session.user as any).id,
+        userId: (session.user as unknown).id,
       },
       data: { status: stage.toUpperCase() },
     });
 
     return NextResponse.json({ success: true, updatedCount: updated.count });
-  } catch (error) {
+  } catch (_error) {
     return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
   }
 }

@@ -18,19 +18,19 @@ export async function POST(
     const application = await prisma.application.upsert({
       where: {
         // Need to add a unique constraint in schema for user + job
-        id: `app_${(session.user as any).id}_${id}`,
+        id: `app_${(session.user as unknown).id}_${id}`,
       },
       update: { status: "APPLIED" },
       create: {
-        id: `app_${(session.user as any).id}_${id}`,
-        userId: (session.user as any).id,
+        id: `app_${(session.user as unknown).id}_${id}`,
+        userId: (session.user as unknown).id,
         jobId: id,
         status: "APPLIED",
       },
     });
 
     return NextResponse.json(application);
-  } catch (error) {
+  } catch (_error) {
     return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
   }
 }

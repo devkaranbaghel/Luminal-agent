@@ -8,11 +8,11 @@ import { revalidatePath } from "next/cache";
 export async function seedDemoData() {
   const session = await getServerSession(authOptions);
   
-  if (!session || !session.user || !(session.user as any).id) {
+  if (!session || !session.user || !(session.user as unknown).id) {
     throw new Error("Unauthorized");
   }
 
-  const userId = (session.user as any).id;
+  const userId = (session.user as unknown).id;
 
   // 1. Seed Scraped Jobs (Matches)
   const jobsToCreate = [

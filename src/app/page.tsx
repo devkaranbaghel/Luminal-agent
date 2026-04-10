@@ -20,7 +20,7 @@ export default function RegisterPage() {
     
     try {
       // 1. Create the user physically in the unified PostgreSQL Database via API
-      const backendRes = await api.post('/auth/register', { email, password, name }) as any;
+      const backendRes = await api.post('/auth/register', { email, password, name }) as unknown;
       
       // Save Express JWTs so Axios calls to the Python/Node agents on port 4000 work!
       if (backendRes.data?.accessToken) {
@@ -42,7 +42,7 @@ export default function RegisterPage() {
 
       // 3. Navigate successfully to the protected Profile
       router.push('/profile');
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Registration failed:', error);
       setLoading(false);
     }

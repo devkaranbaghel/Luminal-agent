@@ -23,7 +23,7 @@ export async function PUT(
       include: { profile: true },
     });
 
-    if (!version || version.profile.userId !== (session.user as any).id) {
+    if (!version || version.profile.userId !== (session.user as unknown).id) {
       return NextResponse.json({ error: "Unauthorized or not found" }, { status: 403 });
     }
 
@@ -45,7 +45,7 @@ export async function PUT(
     });
 
     return NextResponse.json(updatedVersion);
-  } catch (error) {
+  } catch (_error) {
     return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
   }
 }

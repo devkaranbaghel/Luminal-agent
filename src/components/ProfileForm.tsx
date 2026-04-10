@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { User, Code2, Briefcase, Plus, X, Sparkles, MessageCircle } from 'lucide-react';
 import { saveProfile } from '@/app/actions/profile';
 
-export function ProfileForm({ initialProfile, userEmail }: { initialProfile: any, userEmail: string }) {
+export function ProfileForm({ initialProfile, userEmail }: { initialProfile: unknown, userEmail: string }) {
   const [isSaving, setIsSaving] = useState(false);
   const [successMsg, setSuccessMsg] = useState("");
   
@@ -29,7 +29,7 @@ export function ProfileForm({ initialProfile, userEmail }: { initialProfile: any
       await saveProfile(formData);
       setSuccessMsg("Profile saved successfully!");
       setTimeout(() => setSuccessMsg(""), 3000);
-    } catch (e: any) {
+    } catch (e: unknown) {
       alert("Error saving: " + e.message);
     }
     setIsSaving(false);
@@ -59,7 +59,7 @@ export function ProfileForm({ initialProfile, userEmail }: { initialProfile: any
   };
 
   const removeExperience = (index: number) => {
-    setFormData({ ...formData, experience: formData.experience.filter((_: any, i: number) => i !== index) });
+    setFormData({ ...formData, experience: formData.experience.filter((_: unknown, i: number) => i !== index) });
   };
 
   const addProject = () => {
@@ -232,7 +232,7 @@ export function ProfileForm({ initialProfile, userEmail }: { initialProfile: any
           </div>
 
           <div className="flex flex-col gap-6">
-            {formData.experience.map((exp: any, i: number) => (
+            {formData.experience.map((exp: unknown, i: number) => (
               <div key={i} className="bg-[#1a1a28]/40 border border-border-color p-4 rounded-xl relative">
                 <button onClick={() => removeExperience(i)} className="absolute top-4 right-4 text-text-muted hover:text-red-500">
                   <X size={16} />
@@ -265,7 +265,7 @@ export function ProfileForm({ initialProfile, userEmail }: { initialProfile: any
             </button>
           </div>
           <div className="flex flex-col gap-4">
-            {formData.projects.map((p: any, i: number) => (
+            {formData.projects.map((p: unknown, i: number) => (
               <div key={i} className="flex flex-col gap-2 p-3 bg-sidebar-bg/50 border border-border-color rounded-lg">
                 <input placeholder="Project Name" value={p.name} onChange={e => updateProject(i, 'name', e.target.value)} className="input-field !h-9 text-sm" />
                 <input placeholder="Link" value={p.link} onChange={e => updateProject(i, 'link', e.target.value)} className="input-field !h-9 text-sm" />
@@ -286,7 +286,7 @@ export function ProfileForm({ initialProfile, userEmail }: { initialProfile: any
             </button>
           </div>
           <div className="flex flex-col gap-4">
-            {formData.education.map((e: any, i: number) => (
+            {formData.education.map((e: unknown, i: number) => (
               <div key={i} className="flex flex-col gap-2 p-3 bg-sidebar-bg/50 border border-border-color rounded-lg">
                 <input placeholder="School/University" value={e.school} onChange={e => updateEducation(i, 'school', e.target.value)} className="input-field !h-9 text-sm" />
                 <input placeholder="Degree" value={e.degree} onChange={e => updateEducation(i, 'degree', e.target.value)} className="input-field !h-9 text-sm" />

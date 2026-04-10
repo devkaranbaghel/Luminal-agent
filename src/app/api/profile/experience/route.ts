@@ -12,12 +12,12 @@ export async function GET() {
 
   try {
     const profile = await prisma.profile.findUnique({
-      where: { userId: (session.user as any).id },
+      where: { userId: (session.user as unknown).id },
       include: { experience: true },
     });
 
     return NextResponse.json(profile?.experience || []);
-  } catch (error) {
+  } catch (_error) {
     return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
   }
 }
@@ -32,7 +32,7 @@ export async function POST(req: Request) {
   try {
     const { title, company, period, description } = await req.json();
     const profile = await prisma.profile.findUnique({
-      where: { userId: (session.user as any).id },
+      where: { userId: (session.user as unknown).id },
     });
 
     if (!profile) return NextResponse.json({ error: "Profile not found" }, { status: 404 });
@@ -48,7 +48,7 @@ export async function POST(req: Request) {
     });
 
     return NextResponse.json(experience);
-  } catch (error) {
+  } catch (_error) {
     return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
   }
 }

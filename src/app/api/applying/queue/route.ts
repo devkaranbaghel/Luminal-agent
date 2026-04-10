@@ -13,7 +13,7 @@ export async function GET() {
   try {
     const applications = await prisma.application.findMany({
       where: {
-        userId: (session.user as any).id,
+        userId: (session.user as unknown).id,
         status: { in: ["QUEUED", "SUBMITTING", "SUBMITTED", "FAILED"] }
       },
       include: { job: true },
@@ -21,7 +21,7 @@ export async function GET() {
     });
 
     return NextResponse.json(applications);
-  } catch (error) {
+  } catch (_error) {
     return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
   }
 }
@@ -36,13 +36,13 @@ export async function DELETE() {
   try {
     const deleted = await prisma.application.deleteMany({
       where: {
-        userId: (session.user as any).id,
+        userId: (session.user as unknown).id,
         status: "QUEUED"
       }
     });
 
     return NextResponse.json({ success: true, count: deleted.count });
-  } catch (error) {
+  } catch (_error) {
     return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
   }
 }

@@ -6,7 +6,7 @@ export async function POST(
   req: Request,
   { params }: { params: Promise<{ id: string }> }
 ) {
-  const { id } = await params;
+  const { _id } = await params;
   const session = await getServerSession(authOptions);
 
   if (!session || !session.user) {

@@ -11,7 +11,7 @@ export async function GET() {
   }
 
   try {
-    const userId = (session.user as any).id;
+    const userId = (session.user as unknown).id;
     
     const applications = await prisma.application.findMany({
       where: { userId },
@@ -27,7 +27,7 @@ export async function GET() {
     };
 
     return NextResponse.json(columns);
-  } catch (error) {
+  } catch (_error) {
     return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
   }
 }

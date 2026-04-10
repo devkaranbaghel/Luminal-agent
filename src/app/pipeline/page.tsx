@@ -8,7 +8,7 @@ import {
   Send, 
   Users, 
   CheckCircle2, 
-  MoreHorizontal,
+  
   GripVertical
 } from 'lucide-react';
 
@@ -108,7 +108,7 @@ export default function PipelinePage() {
                   </div>
 
                   <div className="flex flex-col gap-3 h-full min-h-[500px]">
-                    {col.jobs.map((job: any) => (
+                    {col.jobs.map((job: unknown) => (
                       <div key={job.id} className="bg-card-surface border border-border-color p-4 rounded-lg group hover:border-[#3a2e80] transition-all cursor-grab active:cursor-grabbing">
                         <div className="flex items-center justify-between mb-2">
                           <span className="text-[10px] font-bold text-text-muted uppercase tracking-wider">{job.company}</span>

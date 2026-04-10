@@ -15,7 +15,7 @@ export async function POST(
   }
 
   try {
-    const userId = (session.user as any).id;
+    const userId = (session.user as unknown).id;
 
     const application = await prisma.application.upsert({
       where: {
@@ -31,7 +31,7 @@ export async function POST(
     });
 
     return NextResponse.json(application);
-  } catch (error) {
+  } catch (_error) {
     return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
   }
 }

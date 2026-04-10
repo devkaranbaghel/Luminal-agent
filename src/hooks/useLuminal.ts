@@ -3,7 +3,7 @@ import { api } from '@/lib/api';
 import { useRouter } from 'next/navigation';
 
 export function useAuth() {
-  const [user, setUser] = useState<any>(null);
+  const [user, setUser] = useState<unknown>(null);
   const [loading, setLoading] = useState(true);
   const router = useRouter();
 
@@ -15,10 +15,10 @@ export function useAuth() {
     setLoading(false);
   }, []);
 
-  const login = async (credentials: any) => {
+  const login = async (credentials: unknown) => {
     setLoading(true);
     try {
-      const res = await api.post('/auth/login', credentials) as any;
+      const res = await api.post('/auth/login', credentials) as unknown;
       const { user, accessToken, refreshToken } = res.data;
       
       localStorage.setItem('user', JSON.stringify(user));
@@ -34,10 +34,10 @@ export function useAuth() {
     }
   };
 
-  const register = async (data: any) => {
+  const register = async (data: unknown) => {
     setLoading(true);
     try {
-      const res = await api.post('/auth/register', data) as any;
+      const res = await api.post('/auth/register', data) as unknown;
       const { user, accessToken, refreshToken } = res.data;
       
       localStorage.setItem('user', JSON.stringify(user));
@@ -71,7 +71,7 @@ export function useAutomation() {
   const fetchMatches = async () => {
     setLoading(true);
     try {
-      const res = await api.get('/automation/matches') as any;
+      const res = await api.get('/automation/matches') as unknown;
       setMatches(res.data);
     } catch (error) {
       console.error(error);
@@ -84,7 +84,7 @@ export function useAutomation() {
     try {
       await api.post('/automation/apply', { title, company });
       return true;
-    } catch (error) {
+    } catch (_error) {
       return false;
     }
   };

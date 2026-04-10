@@ -30,7 +30,7 @@ export async function GET(req: Request) {
     });
 
     return NextResponse.json(jobs);
-  } catch (error) {
+  } catch (_error) {
     return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
   }
 }

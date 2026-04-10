@@ -15,7 +15,7 @@ export async function PUT(req: Request) {
     // In a real app, you might update a user preference or trigger a background service
     // For now, we return the status
     return NextResponse.json({ success: true, agentPaused: paused });
-  } catch (error) {
+  } catch (_error) {
     return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
   }
 }

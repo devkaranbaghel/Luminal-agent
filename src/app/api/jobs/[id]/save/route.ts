@@ -17,19 +17,19 @@ export async function POST(
   try {
     const application = await prisma.application.upsert({
       where: {
-        id: `app_${(session.user as any).id}_${id}`,
+        id: `app_${(session.user as unknown).id}_${id}`,
       },
       update: { status: "SAVED" },
       create: {
-        id: `app_${(session.user as any).id}_${id}`,
-        userId: (session.user as any).id,
+        id: `app_${(session.user as unknown).id}_${id}`,
+        userId: (session.user as unknown).id,
         jobId: id,
         status: "SAVED",
       },
     });
 
     return NextResponse.json(application);
-  } catch (error) {
+  } catch (_error) {
     return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
   }
 }

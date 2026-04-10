@@ -12,7 +12,7 @@ import {
 import { updateScrapingFilters } from '@/app/actions/scraping';
 import { useRouter } from 'next/navigation';
 
-export function ScrapingClient({ initialFilter, logs, discoveries }: { initialFilter: any, logs: any[], discoveries: any[] }) {
+export function ScrapingClient({ initialFilter, logs, discoveries }: { initialFilter: unknown, logs: unknown[], discoveries: unknown[] }) {
   const [isUpdating, setIsUpdating] = useState(false);
   const router = useRouter();
 
@@ -28,7 +28,7 @@ export function ScrapingClient({ initialFilter, logs, discoveries }: { initialFi
     try {
       await updateScrapingFilters(formData);
       router.refresh();
-    } catch (e) {
+    } catch (_e) {
       alert("Failed to update filters");
     } finally {
       setIsUpdating(false);

@@ -13,11 +13,11 @@ import {
   Check, 
   Filter,
   CheckCircle2,
-  TrendingUp,
-  Clock,
+  
+  
   Zap
 } from 'lucide-react';
-import { useState } from 'react';
+import { } from 'react';
 
 const notifications = [
   {

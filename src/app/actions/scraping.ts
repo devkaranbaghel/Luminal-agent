@@ -13,11 +13,11 @@ export async function updateScrapingFilters(formData: {
 }) {
   const session = await getServerSession(authOptions);
   
-  if (!session || !session.user || !(session.user as any).id) {
+  if (!session || !session.user || !(session.user as unknown).id) {
     throw new Error("Unauthorized");
   }
 
-  const userId = (session.user as any).id;
+  const userId = (session.user as unknown).id;
 
   await prisma.scrapingFilter.upsert({
     where: { userId },

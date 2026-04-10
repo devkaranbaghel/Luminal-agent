@@ -12,7 +12,7 @@ export async function GET() {
 
   try {
     const jobs = await prisma.pipelineJob.findMany({
-      where: { userId: (session.user as any).id },
+      where: { userId: (session.user as unknown).id },
       orderBy: { updatedAt: 'desc' }
     });
 
@@ -24,7 +24,7 @@ export async function GET() {
     };
 
     return NextResponse.json(stages);
-  } catch (error) {
+  } catch (_error) {
     return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
   }
 }
@@ -41,7 +41,7 @@ export async function POST(req: Request) {
     
     const newJob = await prisma.pipelineJob.create({
       data: {
-        userId: (session.user as any).id,
+        userId: (session.user as unknown).id,
         title,
         company,
         stage: stage || "DISCOVERED",
@@ -52,7 +52,7 @@ export async function POST(req: Request) {
     });
 
     return NextResponse.json(newJob);
-  } catch (error) {
+  } catch (_error) {
     return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
   }
 }

@@ -13,7 +13,7 @@ export async function GET(req: Request) {
   const { searchParams } = new URL(req.url);
   const minScore = parseInt(searchParams.get("minScore") || "0");
   const platform = searchParams.get("platform");
-  const jobType = searchParams.get("jobType");
+  const _jobType = searchParams.get("_jobType");
 
   try {
     const jobs = await prisma.job.findMany({
@@ -23,14 +23,14 @@ export async function GET(req: Request) {
       },
       include: {
         applications: {
-          where: { userId: (session.user as any).id }
+          where: { userId: (session.user as unknown).id }
         }
       },
       orderBy: { matchScore: 'desc' }
     });
 
     return NextResponse.json(jobs);
-  } catch (error) {
+  } catch (_error) {
     return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
   }
 }

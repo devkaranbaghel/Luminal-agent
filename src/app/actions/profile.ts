@@ -12,17 +12,17 @@ export async function saveProfile(formData: {
   githubUrl?: string;
   portfolioUrl?: string;
   skills: string[];
-  experience: any[];
-  education: any[];
-  projects: any[];
+  experience: unknown[];
+  education: unknown[];
+  projects: unknown[];
 }) {
   const session = await getServerSession(authOptions);
   
-  if (!session || !session.user || !(session.user as any).id) {
+  if (!session || !session.user || !(session.user as unknown).id) {
     throw new Error("Unauthorized");
   }
 
-  const userId = (session.user as any).id;
+  const userId = (session.user as unknown).id;
 
   // Sync basic user info too
   await prisma.user.update({

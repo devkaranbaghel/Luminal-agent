@@ -13,14 +13,14 @@ export async function PUT() {
   try {
     const updated = await prisma.notification.updateMany({
       where: { 
-        userId: (session.user as any).id,
+        userId: (session.user as unknown).id,
         isRead: false
       },
       data: { isRead: true }
     });
 
     return NextResponse.json({ success: true, count: updated.count });
-  } catch (error) {
+  } catch (_error) {
     return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
   }
 }

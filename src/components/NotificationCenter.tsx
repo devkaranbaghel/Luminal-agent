@@ -2,29 +2,32 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { Bell, Zap, CheckCircle, AlertCircle, Info, X, Filter, Check } from 'lucide-react';
+import { Bell, Zap, CheckCircle, AlertCircle, Info, Filter, Check } from 'lucide-react';
 
-export function NotificationCenter({ userId }: { userId?: string }) {
+interface INotification {
+  id: string;
+  title: string;
+  message: string;
+  type: string;
+  isRead: boolean;
+  createdAt: Date | number;
+}
+
+export function NotificationCenter({ _userId }: { _userId?: string }) {
   const [isOpen, setIsOpen] = useState(false);
-  const [notifications, setNotifications] = useState<any[]>([]);
+  const [notifications, setNotifications] = useState<INotification[]>(() => [
+    { id: '1', title: 'Application Submitted', message: 'Applied to Senior Frontend Engineer at TechPulse', type: 'SUCCESS', isRead: false, createdAt: new Date() },
+    { id: '2', title: 'Agent Feedback', message: 'Your resume has been optimized for the Fintech Role.', type: 'AGENT', isRead: false, createdAt: new Date(Date.now() - 3600000) },
+    { id: '3', title: 'New Job Match', message: 'A 92% match was found on LinkedIn: Staff Engineer.', type: 'INFO', isRead: false, createdAt: new Date(Date.now() - 7200000) },
+  ]);
   const [filterType, setFilterType] = useState<string | null>(null);
   const router = useRouter();
-
-  // Simulation: In a real app, this would be a polling or websocket connection
-  useEffect(() => {
-    // Initial fetch from DB would happen here
-    setNotifications([
-      { id: '1', title: 'Application Submitted', message: 'Applied to Senior Frontend Engineer at TechPulse', type: 'SUCCESS', isRead: false, createdAt: new Date() },
-      { id: '2', title: 'Agent Feedback', message: 'Your resume has been optimized for the Fintech Role.', type: 'AGENT', isRead: false, createdAt: new Date(Date.now() - 3600000) },
-      { id: '3', title: 'New Job Match', message: 'A 92% match was found on LinkedIn: Staff Engineer.', type: 'INFO', isRead: false, createdAt: new Date(Date.now() - 7200000) },
-    ]);
-  }, []);
 
   const markAllRead = () => {
     setNotifications(prev => prev.map(n => ({...n, isRead: true})));
   };
 
-  const handleNotificationClick = (n: any) => {
+  const handleNotificationClick = (n: INotification) => {
     setNotifications(prev => prev.map(prevN => prevN.id === n.id ? { ...prevN, isRead: true } : prevN));
     setIsOpen(false);
     

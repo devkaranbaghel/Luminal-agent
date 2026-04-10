@@ -13,7 +13,7 @@ export default async function ScrapingPage() {
     redirect('/login');
   }
 
-  const userId = (session.user as any).id;
+  const userId = (session.user as unknown).id;
 
   // 1. Fetch Scraping Filter
   const filter = await prisma.scrapingFilter.findUnique({

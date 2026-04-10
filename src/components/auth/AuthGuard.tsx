@@ -7,7 +7,7 @@ import { useEffect } from 'react';
 const PUBLIC_ROUTES = ['/login', '/'];
 
 export function AuthGuard({ children }: { children: React.ReactNode }) {
-  const { user, loading, isAuthenticated } = useAuth();
+  const {  loading, isAuthenticated } = useAuth();
   const router = useRouter();
   const pathname = usePathname();
 

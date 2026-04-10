@@ -19,10 +19,10 @@ export default function LoginPage() {
     try {
       // 1. Authenticate with Express Backend to get raw JWT 
       // (This is required because the Scraper/Tracker use api.ts Axios calls to the backend on port 4000!)
-      const backendRes = await api.post('/auth/login', { email, password }) as any;
+      const backendRes = await api.post('/auth/login', { email, password }) as { data?: { accessToken?: string, refreshToken?: string, user?: unknown } };
       if (backendRes.data?.accessToken) {
         localStorage.setItem('accessToken', backendRes.data.accessToken);
-        localStorage.setItem('refreshToken', backendRes.data.refreshToken);
+        localStorage.setItem('refreshToken', backendRes.data.refreshToken!);
         localStorage.setItem('user', JSON.stringify(backendRes.data.user));
       }
 
@@ -39,8 +39,8 @@ export default function LoginPage() {
 
       // Success, native redirect
       router.push('/profile');
-    } catch (error: any) {
-      console.error('Login failed:', error.message);
+    } catch (error) {
+      console.error('Login failed:', error instanceof Error ? error.message : String(error));
       setLoading(false);
     }
   };
@@ -93,7 +93,7 @@ export default function LoginPage() {
         </form>
 
         <p className="mt-8 text-center text-sm text-text-muted">
-          Don't have an account?{' '}
+          Don&apos;t have an account?{' '}
           <Link href="/" className="text-accent-primary font-bold hover:underline">
             Create Agent
           </Link>

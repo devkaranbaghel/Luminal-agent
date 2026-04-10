@@ -1,6 +1,6 @@
 'use client';
 
-import { Moon, Sun } from 'lucide-react';
+import { Moon } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useSession } from 'next-auth/react';
@@ -49,7 +49,7 @@ export function TopNav() {
       </div>
 
       <div className="flex items-center gap-4">
-        <NotificationCenter userId={(session?.user as any)?.id} />
+        <NotificationCenter userId={(session?.user as unknown)?.id} />
         <button className="text-text-muted hover:text-text-primary transition-colors">
           <Moon size={20} />
         </button>

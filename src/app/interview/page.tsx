@@ -8,13 +8,13 @@ import {
   Calendar as CalendarIcon, 
   Play, 
   Video, 
-  Star, 
-  ArrowRight,
+   
+  
   ExternalLink,
-  Info,
+  
   Smartphone,
-  CheckCircle2,
-  Clock,
+  
+  
   MoreVertical
 } from 'lucide-react';
 import { useState } from 'react';

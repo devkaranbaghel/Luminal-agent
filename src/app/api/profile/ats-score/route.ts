@@ -12,12 +12,12 @@ export async function GET() {
 
   try {
     const profile = await prisma.profile.findUnique({
-      where: { userId: (session.user as any).id },
+      where: { userId: (session.user as unknown).id },
       select: { atsScore: true },
     });
 
     return NextResponse.json({ atsScore: profile?.atsScore || 0 });
-  } catch (error) {
+  } catch (_error) {
     return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
   }
 }

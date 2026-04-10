@@ -13,7 +13,7 @@ export default async function TrackerPage() {
     redirect('/login');
   }
 
-  const userId = (session.user as any).id;
+  const userId = (session.user as unknown).id;
 
   // Fetch all applications for the user
   const applications = await prisma.application.findMany({

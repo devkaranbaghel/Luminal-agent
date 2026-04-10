@@ -12,7 +12,7 @@ export async function GET() {
 
   try {
     const profile = await prisma.profile.findUnique({
-      where: { userId: (session.user as any).id },
+      where: { userId: (session.user as unknown).id },
       include: {
         skills: true,
         experience: true,
@@ -23,7 +23,7 @@ export async function GET() {
       // Create a default profile if it doesn't exist
       const newProfile = await prisma.profile.create({
         data: {
-          userId: (session.user as any).id,
+          userId: (session.user as unknown).id,
           fullName: session.user.name || "",
           email: session.user.email || "",
         },
@@ -36,7 +36,7 @@ export async function GET() {
     }
 
     return NextResponse.json(profile);
-  } catch (error) {
+  } catch (_error) {
     return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
   }
 }
@@ -53,7 +53,7 @@ export async function PUT(req: Request) {
     const { fullName, email, headline } = body;
 
     const updatedProfile = await prisma.profile.update({
-      where: { userId: (session.user as any).id },
+      where: { userId: (session.user as unknown).id },
       data: {
         fullName,
         email,
@@ -62,7 +62,7 @@ export async function PUT(req: Request) {
     });
 
     return NextResponse.json(updatedProfile);
-  } catch (error) {
+  } catch (_error) {
     return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
   }
 }

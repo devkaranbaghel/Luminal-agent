@@ -19,7 +19,7 @@ export async function GET(
       where: { id: id },
       include: {
         applications: {
-          where: { userId: (session.user as any).id }
+          where: { userId: (session.user as unknown).id }
         }
       }
     });
@@ -27,7 +27,7 @@ export async function GET(
     if (!job) return NextResponse.json({ error: "Job not found" }, { status: 404 });
 
     return NextResponse.json(job);
-  } catch (error) {
+  } catch (_error) {
     return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
   }
 }
